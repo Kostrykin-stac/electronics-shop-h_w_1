@@ -68,18 +68,12 @@ class Item:
         with open(file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
-                print(row)
-                #name = row['name']
-                #price = cls.string_to_number(row['price'])
-                #quantity = int(row['quantity'])
-                #cls(name, price, quantity)
+                name = row['name']
+                price = cls.string_to_number(row['price'])
+                quantity = int(row['quantity'])
+                cls(name, price, quantity)
 
     @staticmethod
     def string_to_number(value: str) -> float:
-        """
-        Преобразует строку с числом в число.
-
-        :param value: Строка с числом.
-        :return: Число.
-        """
+        """Преобразует строку с числом в число."""
         return float(value)
