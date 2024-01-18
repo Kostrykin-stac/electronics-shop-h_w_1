@@ -64,10 +64,12 @@ class Item:
         """
         Создает экземпляры класса Item из данных в файле items.csv.
         """
+        cls.all.clear()
         file_path = '/home/maxim/PycharmProjects/electronics-shop-h_w_1/src/items.csv'
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', newline='', encoding='utf-8-sig') as file:
             reader = csv.DictReader(file)
-            for row in reader:
+            data = list(reader)
+            for row in data:
                 name = row['name']
                 price = cls.string_to_number(row['price'])
                 quantity = int(row['quantity'])
@@ -76,4 +78,4 @@ class Item:
     @staticmethod
     def string_to_number(value: str) -> float:
         """Преобразует строку с числом в число."""
-        return float(value)
+        return int(float(value))
