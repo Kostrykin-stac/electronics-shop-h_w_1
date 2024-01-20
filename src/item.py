@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 
 
 class Item:
@@ -16,7 +17,7 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.__name = name
+        self.name = name
         self.price = price
         self.quantity = quantity
         self.all.append(self)
@@ -65,7 +66,7 @@ class Item:
         Создает экземпляры класса Item из данных в файле items.csv.
         """
         cls.all.clear()
-        file_path = '/home/maxim/PycharmProjects/electronics-shop-h_w_1/src/items.csv'
+        file_path = Path(__file__).parent.joinpath("items.csv")
         with open(file_path, 'r', newline='', encoding='utf-8-sig') as file:
             reader = csv.DictReader(file)
             data = list(reader)
