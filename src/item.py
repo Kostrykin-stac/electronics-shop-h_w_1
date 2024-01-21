@@ -80,3 +80,11 @@ class Item:
     def string_to_number(value: str) -> float:
         """Преобразует строку с числом в число."""
         return int(float(value))
+
+    def __repr__(self):
+        """Отображает информацию об объекте класса в режиме отладки"""
+        return f"Item('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        """Отображает информацию об объекте класса для пользователей"""
+        return self.name

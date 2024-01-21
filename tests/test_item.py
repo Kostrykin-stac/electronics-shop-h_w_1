@@ -47,3 +47,25 @@ def test_apply_discount(name, price, quantity, pay_rate, discount_price):
 @pytest.mark.parametrize("value, expected", [("10.0", 10.0), ("5.0", 5.0)])
 def test_string_to_number(value, expected):
     assert Item.string_to_number(value) == expected
+
+
+@pytest.mark.parametrize("name, price, quantity", [("Смартфон", 100, 1),
+                                                   ("Ноутбук", 1000, 3),
+                                                   ("Кабель", 10, 5),
+                                                   ("Мышка", 50, 5),
+                                                   ("Клавиатура", 75, 5)
+                                                   ])
+def test_repr(name, price, quantity):
+    item = Item(name, price, quantity)
+    assert repr(item) == f"Item('{name}', {price}, {quantity})"
+
+
+@pytest.mark.parametrize("name, price, quantity, expected_str", [("Смартфон", 100, 1, 'Смартфон'),
+                                                                 ("Ноутбук", 1000, 3, 'Ноутбук'),
+                                                                 ("Кабель", 10, 5, 'Кабель'),
+                                                                 ("Мышка", 50, 5, 'Мышка'),
+                                                                 ("Клавиатура", 75, 5, 'Клавиатура'),
+                                                                 ])
+def test_str(name, price, quantity, expected_str):
+    item = Item(name, price, quantity)
+    assert str(item) == expected_str
