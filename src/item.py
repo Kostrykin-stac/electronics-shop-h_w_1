@@ -90,3 +90,11 @@ class Item:
         """Возвращает строковое представление
          объекта для отображения пользователю"""
         return self.name
+
+    def __add__(self, other):
+        """Переопределение оператора сложения для
+        экземпляров класса Item и Phone."""
+        if isinstance(other, Item):
+            return self.quantity + other.quantity
+        else:
+            raise TypeError()

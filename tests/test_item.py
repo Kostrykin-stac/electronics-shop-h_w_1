@@ -1,5 +1,6 @@
 import pytest
 from src.item import Item
+from src.phone import Phone
 
 
 @pytest.mark.parametrize("name, price, quantity", [("Смартфон", 100, 1), ("Ноутбук", 1000, 3),
@@ -69,3 +70,23 @@ def test_repr(name, price, quantity):
 def test_str(name, price, quantity, expected_str):
     item = Item(name, price, quantity)
     assert str(item) == expected_str
+
+
+@pytest.mark.parametrize("item1, item2, expected_quantity", [
+    (Item("Ноутбук", 1000, 3), Item("Телефон", 500, 2), 5),
+    (Item("Мышка", 200, 4), Item("Клавиатура", 300, 2), 6),
+])
+def test_add_item_objects(item1, item2, expected_quantity):
+    result = item1 + item2
+    assert result == expected_quantity, f"Addition of item objects did not return the expected quantity. Result: {result}, Expected: {expected_quantity}"
+
+
+@pytest.mark.parametrize(
+    "item_name, item_price, item_quantity, phone_name, phone_price, phone_quantity, expected_result", [
+        ("Смартфон", 10000, 20, "iPhone 14", 120000, 5, 25),
+        ("Ноутбук", 50000, 10, "Samsung Galaxy", 80000, 3, 13),
+    ])
+def test_add(item_name, item_price, item_quantity, phone_name, phone_price, phone_quantity, expected_result):
+    item = Item(item_name, item_price, item_quantity)
+    phone = Phone(phone_name, phone_price, phone_quantity, 2)
+    assert item + phone == expected_result
