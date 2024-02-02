@@ -17,10 +17,10 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
-        self.all.append(self)
+        Item.all.append(self)
 
     @property
     def name(self):
@@ -35,16 +35,16 @@ class Item:
     @name.setter
     def name(self, value):
         """
-        Сеттер для приватного атрибута name.
-        Присваивает значение приватному атрибуту name.
-        Если длина переданного значения больше 10 символов, обрезает его до 10 символов.
-
-        :param value: Новое значение для названия товара.
+        Проверяет, что длина наименования товара не больше 10 симвовов.
+        В противном случае,
+        обрезать строку (оставить первые 10 символов)
         """
-        if len(value) > 10:
-            self.__name = value[:10]
-        else:
+        if len(value) <= 10:
             self.__name = value
+            print(f'Корректное название - {value}')
+        else:
+            self.__name = value[:10]
+            print(f'Длинное слово - {value[:10]}')
 
     def calculate_total_price(self) -> float:
         """
