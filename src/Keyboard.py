@@ -9,10 +9,6 @@ class Lang:
     def language(self):
         return self.__language
 
-    # @language.setter
-    # def language(self, language):
-    #     self.__language = language
-
     def change_lang(self):
         if self.__language == "EN":
             self.__language = "RU"
