@@ -1,16 +1,32 @@
 import pytest
-from src.item import Item
+from src.item import Item, InstantiateCSVError
 from src.phone import Phone
 
 
-@pytest.mark.parametrize("name, price, quantity", [("Смартфон", 100, 1), ("Ноутбук", 1000, 3),
-                                                   ('Кабель', 10, 5), ('Мышка', 50, 5),
-                                                   ('Клавиатура', 75, 5)])
+@pytest.mark.parametrize("name, price, quantity", [("Смартфон", 100, 1),
+                                                   ("Ноутбук", 1000, 3),
+                                                   ('Кабель', 10, 5),
+                                                   ('Мышка', 50, 5),
+                                                   ('Клавиатура', 75, 5)
+                                                   ])
 def test_instantiate_from_csv(name, price, quantity):
-    item = Item(name, price, quantity)
-    assert item.name == name
-    assert item.price == price
-    assert item.quantity == quantity
+    Item.instantiate_from_csv('../src/items.csv')
+    found = False
+    for item in Item.all:
+        if item.name == name and item.price == price and item.quantity == quantity:
+            found = True
+            break
+    assert found, f"Item with name '{name}', price '{price}', and quantity '{quantity}' not found in Item.all"
+
+
+def test_instantiate_csv_error():
+    with pytest.raises(InstantiateCSVError):
+        Item.instantiate_from_csv('../src/error.csv')
+
+
+def test_file_not_found_error():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv('src/item.csv')
 
 
 @pytest.mark.parametrize("name, price, quantity", [("Смартфон с длинным названием", 100, 1),
@@ -78,7 +94,7 @@ def test_str(name, price, quantity, expected_str):
 ])
 def test_add_item_objects(item1, item2, expected_quantity):
     result = item1 + item2
-    assert result == expected_quantity, f"Addition of item objects did not return the expected quantity. Result: {result}, Expected: {expected_quantity}"
+    assert result == expected_quantity, f"Добавление предметов объектов не вернуло ожидаемое количество. Result: {result}, Expected: {expected_quantity}"
 
 
 @pytest.mark.parametrize(

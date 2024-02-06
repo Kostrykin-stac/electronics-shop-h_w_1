@@ -2,6 +2,10 @@ import csv
 from pathlib import Path
 
 
+class InstantiateCSVError(Exception):
+    pass
+
+
 class Item:
     """
     Класс для представления товара в магазине
@@ -39,12 +43,11 @@ class Item:
         В противном случае,
         обрезать строку (оставить первые 10 символов)
         """
-        if len(value) <= 10:
-            self.__name = value
-            print(f'Корректное название - {value}')
-        else:
+
+        if len(value) > 10:
             self.__name = value[:10]
-            print(f'Длинное слово - {value[:10]}')
+        else:
+            self.__name = value
 
     def calculate_total_price(self) -> float:
         """
@@ -61,20 +64,26 @@ class Item:
         self.price *= self.pay_rate
 
     @classmethod
-    def instantiate_from_csv(cls, file_path) -> None:
+    def instantiate_from_csv(cls, file_path='../src/items.csv'):
         """
         Создает экземпляры класса Item из данных в файле items.csv.
         """
         cls.all.clear()
-        file_path = Path(__file__).parent.joinpath("items.csv")
-        with open(file_path, 'r', newline='', encoding='utf-8-sig') as file:
-            reader = csv.DictReader(file)
-            data = list(reader)
-            for row in data:
-                name = row['name']
-                price = cls.string_to_number(row['price'])
-                quantity = int(row['quantity'])
-                cls(name, price, quantity)
+        file_path = Path(__file__).parent.joinpath(file_path)
+
+        try:
+            with open(file_path, 'r', newline='', encoding='utf-8-sig') as file:
+                reader = csv.DictReader(file)
+                data = list(reader)
+                for row in data:
+                    if 'name' not in row or 'price' not in row or 'quantity' not in row:
+                        raise InstantiateCSVError("Файл item.csv поврежден")
+                    name = row['name']
+                    price = cls.string_to_number(row['price'])
+                    quantity = int(row['quantity'])
+                    cls(name, price, quantity)
+        except FileNotFoundError:
+            raise FileNotFoundError("Отсутствует файл item.csv")
 
     @staticmethod
     def string_to_number(value: str) -> float:
